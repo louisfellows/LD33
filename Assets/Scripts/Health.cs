@@ -50,6 +50,7 @@ public class Health : MonoBehaviour {
 				GetComponent<Control>().disabled = true;
 				gameOverCanvas.GetComponent<CanvasGroup>().alpha = 1f;
 				gameOverCanvas.GetComponent<CanvasGroup>().interactable = true;
+				gameOverCanvas.GetComponent<RecordHighScore>().recordAndDisplayScore(GameStatus.getInstance().getScore());
 			}
 		}
 	}

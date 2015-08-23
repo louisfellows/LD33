@@ -69,4 +69,8 @@ public class GameStatus : MonoBehaviour {
 	public void exit() {
 		Application.Quit();
 	}
+	
+	public int getScore() {
+		return score;
+	}
 }
