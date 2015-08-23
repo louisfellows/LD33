@@ -16,6 +16,7 @@ public class FireProjectile : MonoBehaviour {
 	}
 	
 	public void fireShell() {
+		GetComponent<AudioSource>().Play();
 		Instantiate (shell, transform.position, transform.rotation);
 	}
 }

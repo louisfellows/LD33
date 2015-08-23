@@ -6,11 +6,10 @@ public class TankBehavior : MonoBehaviour {
 	public GameObject target;
 	public float fireRate = 0.1f;
 	private float sinceLastShot = 0.1f;
-	public float speed = 0.1f;
-	public float stayDistance = 1;
 	private NavMeshAgent agent;
 	private FireProjectile tankGun;
 	public GameObject wreckage;
+	public int score = 50;
 
 	// Use this for initialization
 	void Start () {
@@ -26,29 +25,30 @@ public class TankBehavior : MonoBehaviour {
 		agent.destination = target.transform.position;
 		print ("Goal" + target.transform.position);
 
-		//if (Vector3.Distance(gameObject.transform.position, target.transform.position) > stayDistance) {
-			gameObject.transform.LookAt(target.transform.position);
+		//gameObject.transform.LookAt(target.transform.position);
 
-		//} else {
-			print ("SinceLast" + sinceLastShot);
-			sinceLastShot -= Time.deltaTime;
-			if (sinceLastShot < 0 && CanSeeTarget()) {
-				tankGun.fireShell();
-				sinceLastShot = fireRate;
-				print ("Fire");
-			}
-		//}
+		print ("SinceLast" + sinceLastShot);
+		sinceLastShot -= Time.deltaTime;
+		if (sinceLastShot < 0 && CanSeeTarget()) {
+			tankGun.fireShell();
+			sinceLastShot = fireRate;
+		}
 	}
 	
 	void OnCollisionEnter (Collision col)
 	{
 		if (col.gameObject.name.Equals("TheMonster")) {
 			if (col.relativeVelocity.magnitude > 5) {
+				Vector3 wreckSpawn = gameObject.transform.position;
+				if (wreckSpawn.y < 0f) {
+					print (wreckSpawn.y);
+					wreckSpawn.y = 1f;
+				}
+				
+				GameObject newWreck = (GameObject) Instantiate(wreckage, wreckSpawn, gameObject.transform.rotation);
+				newWreck.GetComponent<Rigidbody>().AddExplosionForce(10, gameObject.transform.position, 10);
+				GameStatus.getInstance().AddToScore(score);
 				Destroy(gameObject);
-				GameObject newWreck = (GameObject) Instantiate(wreckage, gameObject.transform.position, gameObject.transform.rotation);
-				Vector3 point = col.contacts[0].point;
-				point.y = 0;
-				newWreck.GetComponent<Rigidbody>().AddExplosionForce(100, point, 1);
 			}
 		}
 	}
