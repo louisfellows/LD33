@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class GameStatus : MonoBehaviour {
@@ -13,7 +14,7 @@ public class GameStatus : MonoBehaviour {
 	}
 
 	static int score;
-	public GameObject text;
+	public Text text;
 	public int growthFactor = 500;
 	public int tanksPerIncrement = 1;
 	public int scoreDifficultyIncrement = 5000;
@@ -38,7 +39,7 @@ public class GameStatus : MonoBehaviour {
 	
 	public void AddToScore(int addScore) {
 		score += addScore;
-		text.GetComponent<GUIText>().text = score.ToString();
+		text.text = score.ToString();
 		//float scaleAmount = score / growthFactor;
 		//if (scaleAmount < 1){ scaleAmount = 1; }
 		//GameObject.Find("TheMonster").GetComponent<Transform>().localScale = new Vector3(scaleAmount, scaleAmount, scaleAmount);
@@ -53,6 +54,19 @@ public class GameStatus : MonoBehaviour {
 				spawners[Random.Range(0, spawners.Length)].GetComponent<SpawnScript>().Spawn();
 			}
 		}
-		
+	}
+	
+	public void stopTanks() {
+		foreach (GameObject tank in GameObject.FindGameObjectsWithTag("Tank")) {
+			tank.GetComponent<NavMeshAgent>().enabled = false;
+		}
+	}
+	
+	public void restart() {
+		Application.LoadLevel("game");
+	}
+	
+	public void exit() {
+		Application.Quit();
 	}
 }

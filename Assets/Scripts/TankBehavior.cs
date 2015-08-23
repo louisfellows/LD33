@@ -14,7 +14,6 @@ public class TankBehavior : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		agent = GetComponent<NavMeshAgent>();
-		print(target.name);
 		tankGun = gameObject.GetComponentInChildren<FireProjectile>();
 		sinceLastShot += Random.Range(0, fireRate);
 	}
@@ -23,11 +22,8 @@ public class TankBehavior : MonoBehaviour {
 	void Update () {
 		
 		agent.destination = target.transform.position;
-		print ("Goal" + target.transform.position);
-
 		//gameObject.transform.LookAt(target.transform.position);
 
-		print ("SinceLast" + sinceLastShot);
 		sinceLastShot -= Time.deltaTime;
 		if (sinceLastShot < 0 && CanSeeTarget()) {
 			tankGun.fireShell();
@@ -41,7 +37,6 @@ public class TankBehavior : MonoBehaviour {
 			if (col.relativeVelocity.magnitude > 5) {
 				Vector3 wreckSpawn = gameObject.transform.position;
 				if (wreckSpawn.y < 0f) {
-					print (wreckSpawn.y);
 					wreckSpawn.y = 1f;
 				}
 				
@@ -55,8 +50,8 @@ public class TankBehavior : MonoBehaviour {
 	
 	private bool CanSeeTarget() {
 		if (Physics.Linecast(transform.position, target.transform.position)) { 
-			return true; 
+			return false; 
 		} 
-		return false; 
+		return true; 
 	}
 }

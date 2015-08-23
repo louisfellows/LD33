@@ -28,7 +28,6 @@ public class ProjectileMovement : MonoBehaviour {
 	{
 		Instantiate(collisionEffect, transform.position, Quaternion.identity);
 		col.gameObject.GetComponent<Rigidbody>().AddExplosionForce(explosionForce, transform.position, explosionRadius);
-		GetComponent<AudioSource>().Play();
 		Destroy (gameObject);
 	}
 }
